@@ -1,7 +1,7 @@
 from Bert_encoder import CustomBertModel, Config
 import torch
 from transformers import BertTokenizer
-
+import random
 # metal > cuda > (fall back) cpu
 device = "mps" if torch.backends.mps.is_available else "cuda" if torch.cuda.is_available() else "cpu"
 print(device)
@@ -22,9 +22,22 @@ def generate_embeddings(text: str, model) -> torch.Tensor:
   embeddings = embeddings.squeeze(0)
   return embeddings, text
 
+torch.manual_seed(1337)
+# test: 1
+# Define test cases
+test_cases = [
+    ("You're dog's cute!", "Lovely Dog!", "Similar, but different wording"),
+    ("You're dog's cute!", "You're dog's cute!", "Identical sentences"),
+    ("You're dog's cute!", "The sky is blue today.", "Completely different context"),
+    ("He likes cats.", "She loves cats.", "Different pronouns, similar meaning"),
+    ("The book was amazing!", "I didn't like the movie.", "Opposite sentiments"),
+]
 
-text = """Shree Krishna uses the word atha to indicate that Arjun may want to believe the other explanations that exist about the nature of the self. This verse needs to be understood in the context of the philosophical streams existing in India and their divergent understandings about the nature of self. Indian philosophy has historically comprised of twelve schools of thought. Six of these accept the authority of the Vedas, and hence they are called Āstik Darśhans. These are Mīmānsā, Vedānt, Nyāya, Vaiśheṣhik, Sānkhya, and Yog. Within each of these are more branches—for example, the Vedānt school of thought is further divided into six schools—Adavita vāda, Dwaita vāda, Viśhiṣhṭādvaita vāda, Viśhuddhadvaita vāda, Dwaitādvaita vāda, and Achintya-bhedābheda vāda. Each of these has further branches, for example, Advaita vāda is subdivided into Dṛiṣhṭi-sṛiṣhṭi vāda, Avachchheda vāda, Bimba-pratibimba vāda, Vivarta vāda, Ajāta vāda, etc. We will not go into the details of these schools here. Let it suffice for now to know that all these schools of thought accept the Vedas as the authority of reference. Accordingly, they all accept the eternal, unchangeable soul as the self."""
-
-# test
-embeddings, _ = generate_embeddings(text, model)
-print(embeddings.shape)
+# Run tests for custom implementation and print similarity scores
+print("Similarity Scores:")
+for text1, text2, description in test_cases:
+    embedding1, _ = generate_embeddings(text1.lower(), model)
+    embedding2, _ = generate_embeddings(text2.lower(), model)
+    similarity = torch.nn.functional.cosine_similarity(embedding1.unsqueeze(0), embedding2.unsqueeze(0), dim=1)
+    similarity = similarity.to("cpu")
+    print(f"Similarity between '{text1}' and '{text2}' ({description}): {similarity.item():.3f}")
