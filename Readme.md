@@ -1,5 +1,5 @@
 # **Retrieval Augumented Generation using open-source models**
-Creating a RAG based system (retrieval + generation) using open-source models
+- Creating a RAG based system (retrieval + generation) using open-source models
 =====
 
 ## What is RAG?
