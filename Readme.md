@@ -1,10 +1,10 @@
-# **Retrieval Augumented Generation using open-source models**
+# **RAG using open-source models**
 - Creating a RAG based system (retrieval + generation) using open-source models
 
 ------
 
 ## What is RAG?
-
+* RAG (Retrieval-Augmented Generation) is an framework that combines the strengths of information retrieval systems (such as search and vector databases) with the generative and reasoning capabilities of Large language models. By combining your data with LLMs grounded generation is more accurate and relevant to your specific needs.
 ------
 
 Current stack:
