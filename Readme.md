@@ -1,5 +1,5 @@
-# **RAG using open-source models**
-- Creating a RAG based system (retrieval + generation) using open-source models
+# **RAG using open-source models** (Under development)
+- A RAG based system (retrieval + generation) using open-source models
 
 ------
 
